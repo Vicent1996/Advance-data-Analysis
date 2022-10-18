@@ -1,0 +1,53 @@
+---
+title: "Exam1"
+author: "Vicent Ssentumbwe"
+date: '2022-10-15'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+library(haven)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(knitr)
+pacman::p_load(haven, readr, dplyr, openxlsx)
+```
+
+
+```{r}
+titanic <-read_csv("https://github.com/kijohnson/Data/blob/main/titanic.csv?raw=true")
+```
+```{r}
+titanic %>%
+    group_by(Pclass) %>%
+    dplyr::summarize(median_age = median(Age, na.rm=TRUE))
+```
+Interpretation: ---------
+```{r}
+ggplot(data = titanic) + 
+  stat_summary(
+    mapping = aes(x = Pclass, y = Age),
+    #fun.min = min,
+    #fun.max = max,
+    fun = median
+  )
+```
+```{r}
+#library (tidyverse)
+ggplot(data=titanic)+
+  geom_point(aes(x=Pclass, y= Age))
+
+```
+
+```{r}
+
+```
+
+
+
