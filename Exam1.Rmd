@@ -18,36 +18,43 @@ library(tidyr)
 library(knitr)
 pacman::p_load(haven, readr, dplyr, openxlsx)
 ```
+```{r}
+install.packages("table1")
+```
+```{r}
+library(table1)
+```
 
 
 ```{r}
 titanic <-read_csv("https://github.com/kijohnson/Data/blob/main/titanic.csv?raw=true")
 ```
+# Getting median age by passenger class
 ```{r}
 titanic %>%
     group_by(Pclass) %>%
     dplyr::summarize(median_age = median(Age, na.rm=TRUE))
 ```
-Interpretation: ---------
-```{r}
-ggplot(data = titanic) + 
-  stat_summary(
-    mapping = aes(x = Pclass, y = Age),
-    #fun.min = min,
-    #fun.max = max,
-    fun = median
-  )
-```
+# Scatter plot
 ```{r}
 #library (tidyverse)
 ggplot(data=titanic)+
-  geom_point(aes(x=Pclass, y= Age))
-
+  geom_point(aes(x=Pclass, y= Age))+
+  stat_summary(mapping = aes(x = Pclass, y = Age),
+    fun = median, geom = "crossbar", width = 0.2)+
+  labs(x = "Passenger class",
+       y = "Age",
+       title = "Scatterplot of age by passenger class and the median age by passenger class")
 ```
-
+# percentage of males and females by class
 ```{r}
+class(titanic$Sex) # check class of sex
 
+titanic$Sex <- as.factor(titanic$Sex) # change class of sex
+table1(~Sex | Pclass, data= titanic, caption="Percentage of males and females by passenger class")
 ```
+
+
 
 
 
