@@ -18,6 +18,7 @@ library(tidyr)
 library(knitr)
 pacman::p_load(haven, readr, dplyr, openxlsx)
 ```
+
 ```{r}
 install.packages("table1")
 ```
@@ -35,24 +36,24 @@ titanic %>%
     group_by(Pclass) %>%
     dplyr::summarize(median_age = median(Age, na.rm=TRUE))
 ```
-# Scatter plot
 ```{r}
-#library (tidyverse)
+titanic <- titanic %>%
+        group_by(Pclass) %>%
+        mutate(outlier = ifelse(findoutlier(Age), Age, NA))
+```
+
+# Box plot
+
+```{r}
 ggplot(data=titanic)+
-  geom_point(aes(x=Pclass, y= Age))+
-  stat_summary(mapping = aes(x = Pclass, y = Age),
-    fun = median, geom = "crossbar", width = 0.2)+
+  geom_boxplot(aes(x= factor (Pclass), y= Age, fill= factor(Pclass)))+
   labs(x = "Passenger class",
        y = "Age",
-       title = "Scatterplot of age by passenger class and the median age by passenger class")
+       title = "A boxplot of age by passenger class")
 ```
-# percentage of males and females by class
-```{r}
-class(titanic$Sex) # check class of sex
 
-titanic$Sex <- as.factor(titanic$Sex) # change class of sex
-table1(~Sex | Pclass, data= titanic, caption="Percentage of males and females by passenger class")
-```
+
+
 
 
 
