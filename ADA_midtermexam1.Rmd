@@ -54,8 +54,15 @@ ggplot(data=titanic)+
 
 
 
+# percentage of males and females by class
+```{r}
+class(titanic$Sex) # check class of sex
+```
 
-
+```{r}
+titanic$Sex <- as.factor(titanic$Sex) # change class of sex
+table1(~Sex | Pclass, data= titanic, caption="Percentage of males and females by passenger class")
+```
 
 
 
