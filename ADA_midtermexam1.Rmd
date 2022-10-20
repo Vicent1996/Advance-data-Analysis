@@ -1,0 +1,61 @@
+---
+title: "Exam1"
+author: "Vicent Ssentumbwe"
+date: '2022-10-15'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+library(haven)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(knitr)
+pacman::p_load(haven, readr, dplyr, openxlsx)
+```
+
+```{r}
+install.packages("table1")
+```
+```{r}
+library(table1)
+```
+
+
+```{r}
+titanic <-read_csv("https://github.com/kijohnson/Data/blob/main/titanic.csv?raw=true")
+```
+# Getting median age by passenger class
+```{r}
+titanic %>%
+    group_by(Pclass) %>%
+    dplyr::summarize(median_age = median(Age, na.rm=TRUE))
+```
+```{r}
+titanic <- titanic %>%
+        group_by(Pclass) %>%
+        mutate(outlier = ifelse(findoutlier(Age), Age, NA))
+```
+
+# Box plot
+
+```{r}
+ggplot(data=titanic)+
+  geom_boxplot(aes(x= factor (Pclass), y= Age, fill= factor(Pclass)))+
+  labs(x = "Passenger class",
+       y = "Age",
+       title = "A boxplot of age by passenger class")
+```
+
+
+
+
+
+
+
+
